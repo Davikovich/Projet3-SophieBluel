@@ -109,3 +109,23 @@ const insertCategoriesInTheDom = () => {
   insertWorksInTheDom();
   insertCategoriesInTheDom();
 })();
+
+// Éléments
+const modal = document.getElementById("mediaModal");
+const modalOverlay = document.getElementById("modalOverlay");
+const modalClose = document.getElementById("modalClose");
+const openAddViewBtn = document.getElementById("openAddView");
+const backToGalleryBtn = document.getElementById("backToGallery");
+
+const galleryView = document.getElementById("modalGalleryView");
+const addView = document.getElementById("modalAddView");
+
+// Bouton "Modifier" (à toi d'ajouter cet ID dans ton HTML)
+const openModalBtn = document.getElementById("openModal");
+
+// Ouvrir la modale
+openModalBtn.addEventListener("click", () => {
+  modal.classList.remove("hidden");
+  galleryView.classList.remove("hidden");
+  addView.classList.add("hidden");
+});

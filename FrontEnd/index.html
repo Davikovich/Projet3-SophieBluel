@@ -20,7 +20,7 @@
         <ul>
           <li>projets</li>
           <li>contact</li>
-          <li>login</li>
+          <li><a href="login.html">login</a></li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -154,6 +154,35 @@
         </ul>
       </nav>
     </footer>
+    <!-- MODALE GLOBALE MASQUÉE PAR DÉFAUT -->
+<div class="modal hidden" id="mediaModal">
+  <div class="modal-overlay" id="modalOverlay"></div>
+
+  <div class="modal-content" id="modalContent">
+    <span class="modal-close" id="modalClose">&times;</span>
+
+    <!-- VUE 1 : GALERIE -->
+    <div class="modal-view" id="modalGalleryView">
+      <h3>Galerie photo</h3>
+      <div class="modal-gallery">
+        <!-- Les images seront injectées ici en JS -->
+      </div>
+      <button id="openAddView">Ajouter une photo</button>
+    </div>
+
+    <!-- VUE 2 : AJOUT -->
+    <div class="modal-view hidden" id="modalAddView">
+      <h3>Ajout photo</h3>
+      <form id="addPhotoForm">
+        <input type="file" name="image" accept="image/*" required />
+        <input type="text" name="title" placeholder="Titre" required />
+        <button type="submit">Valider</button>
+      </form>
+      <button id="backToGallery">Retour</button>
+    </div>
+  </div>
+</div>
+
   </body>
-  <script src="script.js"></script>
+  <script src="index.js"></script>
 </html>
