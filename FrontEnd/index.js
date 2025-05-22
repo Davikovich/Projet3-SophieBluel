@@ -4,67 +4,55 @@ Utilisez JavaScript pour ajouter à la galerie les travaux de l’architecte que
 Supprimez du HTML les travaux qui étaient présents. Il ne doit vous rester que le contenu que vous avez ajouté dynamiquement grâce à JavaScript.
 */
 
-// variable globale
 let works = [];
 let categories = [];
 
-/**
- * FONCTION ASYNCHRONE , RÉCUPÉRE LES WORKS DEPUIS L'API
- *
- * @returns{Promise} - promesse qui se résout avec les données JSON
- *
- */
+/** Récupération des projets via l'API */
 const getWorks = async () => {
-  const reponse = await fetch("http://localhost:5678/api/works");
-  const works = await reponse.json(); // variable locale
-  return works;
+  try {
+    const response = await fetch("http://localhost:5678/api/works");
+    return await response.json();
+  } catch (error) {
+    console.error("Erreur lors du chargement des projets :", error);
+    return [];
+  }
 };
 
-/**
- * Alimentation de la galerie avec les données issues de l'API
- */
+/** Récupération des catégories via l'API */
+const getCategories = async () => {
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    return await response.json();
+  } catch (error) {
+    console.error("Erreur lors du chargement des catégories :", error);
+    return [];
+  }
+};
+
+/** Insertion des projets dans la galerie principale */
 const insertWorksInTheDom = (worksToInsert = works) => {
-  console.log(worksToInsert); // affichage des données issues de l'API
-  const gallery = document.querySelector(".gallery"); // récupération de l'élément du DOM avec la classe gallery
-  gallery.innerHTML = ""; // on vide le contenu de la galerie
+  const gallery = document.querySelector(".gallery");
+  gallery.innerHTML = "";
 
-  // Boucle foreach pour ajouter dynamiquement les travaux de l'architecte au DOM (gallery)
   worksToInsert.forEach((work) => {
-    console.log(work);
-    // création structure DOM
-    const figure = document.createElement("figure"); // création élément figure
-    const img = document.createElement("img"); // création élément image
-    const figcaption = document.createElement("figcaption"); // création élément figcaption
+    const figure = document.createElement("figure");
+    const img = document.createElement("img");
+    const figcaption = document.createElement("figcaption");
 
-    // ajout des éléments enfants au DOM
-    figure.appendChild(img);
-    figure.appendChild(figcaption);
-    gallery.appendChild(figure);
-
-    // alimentation du DOM avec les données issues de l'API pour un Objet
     img.src = work.imageUrl;
     img.alt = work.title;
     figcaption.textContent = work.title;
+
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+    gallery.appendChild(figure);
   });
-  // fin de la boucle foreach
-  // console.log(gallery);
 };
 
-/**
- * FONCTION ASYNCHRONE , RÉCUPÉRE LES CATÉGORIES DEPUIS L'API
- *
- * @returns{Promise} - promesse qui se résout avec les données JSON
- *
- */
-const getCategories = async () => {
-  const response = await fetch("http://localhost:5678/api/categories");
-  const categories = await response.json(); // variable locale
-  return categories;
-};
-
+/** Insertion des boutons de filtre */
 const insertCategoriesInTheDom = () => {
-  const filtersContainer = document.querySelector(".filters"); // Assurez-vous d'avoir un conteneur avec cette classe dans le HTML
-  filtersContainer.innerHTML = ""; // Vider les anciens boutons si relancé
+  const filtersContainer = document.querySelector(".filters");
+  filtersContainer.innerHTML = "";
 
   const setActiveButton = (button) => {
     document.querySelectorAll(".filter-btn").forEach((btn) => {
@@ -73,44 +61,67 @@ const insertCategoriesInTheDom = () => {
     button.classList.add("active");
   };
 
-  // Ajouter un bouton "Tous"
   const allBtn = document.createElement("button");
   allBtn.textContent = "Tous";
   allBtn.classList.add("filter-btn");
   allBtn.addEventListener("click", () => {
     insertWorksInTheDom();
-    setActiveButton(allBtn); // Affiche tous les travaux
+    setActiveButton(allBtn);
   });
   filtersContainer.appendChild(allBtn);
 
-  // Ajouter un bouton pour chaque catégorie
   categories.forEach((category) => {
     const btn = document.createElement("button");
     btn.textContent = category.name;
     btn.classList.add("filter-btn");
-
     btn.addEventListener("click", () => {
-      const filteredWorks = works.filter(
-        (work) => work.categoryId === category.id
-      );
-      insertWorksInTheDom(filteredWorks);
+      const filtered = works.filter((w) => w.categoryId === category.id);
+      insertWorksInTheDom(filtered);
       setActiveButton(btn);
     });
-
     filtersContainer.appendChild(btn);
   });
 
   setActiveButton(allBtn);
 };
 
+// Initialisation des données
 (async () => {
   works = await getWorks();
   categories = await getCategories();
   insertWorksInTheDom();
   insertCategoriesInTheDom();
+  insertWorksInModal();
 })();
 
-// Éléments
+// Authentification et mode admin
+
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const loginLink = document.querySelector('nav ul li a[href="login.html"]');
+
+  if (token) {
+    document.body.classList.add("connected");
+
+    const banner = document.getElementById("edition-banner");
+    if (banner) {
+      banner.classList.remove("hidden");
+      document.body.classList.add("has-banner");
+    }
+
+    if (loginLink) {
+      loginLink.textContent = "logout";
+      loginLink.href = "#";
+      loginLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("token");
+        window.location.reload();
+      });
+    }
+  }
+});
+
+// Modale : gestion des vues
 const modal = document.getElementById("mediaModal");
 const modalOverlay = document.getElementById("modalOverlay");
 const modalClose = document.getElementById("modalClose");
@@ -119,13 +130,82 @@ const backToGalleryBtn = document.getElementById("backToGallery");
 
 const galleryView = document.getElementById("modalGalleryView");
 const addView = document.getElementById("modalAddView");
-
-// Bouton "Modifier" (à toi d'ajouter cet ID dans ton HTML)
 const openModalBtn = document.getElementById("openModal");
 
-// Ouvrir la modale
-openModalBtn.addEventListener("click", () => {
-  modal.classList.remove("hidden");
-  galleryView.classList.remove("hidden");
-  addView.classList.add("hidden");
+if (openModalBtn) {
+  openModalBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    galleryView.classList.remove("hidden");
+    addView.classList.add("hidden");
+  });
+}
+
+modalOverlay.addEventListener("click", () => {
+  modal.classList.add("hidden");
 });
+
+modalClose.addEventListener("click", () => {
+  modal.classList.add("hidden");
+});
+
+openAddViewBtn.addEventListener("click", () => {
+  galleryView.classList.add("hidden");
+  addView.classList.remove("hidden");
+});
+
+backToGalleryBtn.addEventListener("click", () => {
+  addView.classList.add("hidden");
+  galleryView.classList.remove("hidden");
+});
+
+// Insertion des projets dans la modale + suppression
+const insertWorksInModal = () => {
+  const modalGallery = document.querySelector(".modal-gallery");
+  modalGallery.innerHTML = "";
+  const token = localStorage.getItem("token");
+
+  works.forEach((work) => {
+    const figure = document.createElement("figure");
+    figure.dataset.id = work.id;
+
+    const img = document.createElement("img");
+    img.src = work.imageUrl;
+    img.alt = work.title;
+
+    const figcaption = document.createElement("figcaption");
+    figcaption.textContent = work.title;
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.addEventListener("click", async () => {
+      if (!confirm("Souhaitez-vous supprimer ce projet ?")) return;
+
+      try {
+        const response = await fetch(`http://localhost:5678/api/works/${work.id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          figure.remove();
+          works = works.filter(w => w.id !== work.id);
+          insertWorksInTheDom();
+        } else {
+          console.error("Erreur lors de la suppression du projet");
+        }
+      } catch (error) {
+        console.error("Erreur API :", error);
+      }
+    });
+
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+    figure.appendChild(deleteBtn);
+    modalGallery.appendChild(figure);
+  });
+};
+
+

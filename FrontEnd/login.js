@@ -1,20 +1,21 @@
 console.log("login.js chargé !");
 
-document.addEventListener("DOMContentLoaded", () => {
+
+const loginForm = (() => { 
+  const loginButton = document.getElementById ("loginButton");
   const form = document.getElementById("loginForm");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  console.log(passwordInput);
+  const errorMessage = document.getElementById("error-message");
 
-  if (!form) {
-    console.error("Formulaire introuvable");
-    return;
-  }
 
-  form.addEventListener("submit", async (event) => {
+  loginButton.addEventListener("click", async (e) => {
+    e.preventDefault();
     console.log("🧠 Formulaire soumis");
-    event.preventDefault();
-
-    const email = form.email.value;
-    const password = form.password.value;
-
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    console.log(email, password);
     try {
       const response = await fetch("http://localhost:5678/api/users/login", {
         method: "POST",
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+      console.log(response);
       if (!response.ok) {
         throw new Error("Identifiants incorrects");
       }
@@ -33,19 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("token", data.token);
       window.location.href = "index.html";
     } catch (error) {
-      const errorMsg = document.getElementById("error-message");
-      if (errorMsg) {
-        errorMsg.textContent = "Email ou mot de passe incorrect.";
+      const errorMessage = document.getElementById("error-message");
+      if (errorMessage) {
+        errorMessage.textContent = "Email ou mot de passe incorrect.";
       }
       console.error("Erreur de connexion :", error);
     }
   });
-
-  const mdpOublier = document.getElementById("mdp-oublier");
-  if (mdpOublier) {
-    mdpOublier.addEventListener("click", (e) => {
-      e.preventDefault();
-      alert("Fonctionnalité non encore disponible.");
-    });
-  }
+  
+  
 });
+loginForm();

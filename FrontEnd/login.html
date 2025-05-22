@@ -17,7 +17,17 @@
   </head>
 
   <body>
-    <header></header>
+    <header>
+      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+      <nav>
+        <ul>
+          <li>projets</li>
+          <li>contact</li>
+          <li><a href="login.html">login</a></li>
+          <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
+        </ul>
+      </nav>
+    </header>
 
     <main class="login-container">
       <h2>Login</h2>
@@ -28,14 +38,20 @@
         <label for="password">Mot de passe :</label>
         <input type="password" id="password" name="password" required /><br />
 
-        <button type="submit">Se connecter</button>
+        <button id="loginButton" type="submit">Se connecter</button>
         <p id="error-message" style="color: red; margin-top: 10px"></p>
         <a href="#" id="mdp-oublier" class="mdp-oublier"
           >Mot de passe oublié ?</a
         >
       </form>
     </main>
-    <footer></footer>
+    <footer>
+      <nav>
+        <ul>
+          <li>Mentions Légales</li>
+        </ul>
+      </nav>
+    </footer>
     <script src="login.js"></script>
   </body>
 </html>

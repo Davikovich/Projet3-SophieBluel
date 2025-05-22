@@ -10,10 +10,26 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <meta name="description" content="" />
+
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
   <body>
+    <!-- Bannière d’édition -->
+    <div id="edition-banner" class="edition-banner hidden">
+      <div class="edition-content">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>Mode édition</span>
+      </div>
+    </div>
+
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
@@ -50,86 +66,91 @@
         </article>
       </section>
       <section id="portfolio">
-        <h2>Mes Projets</h2>
+        <div class="projets-modifs">
+          <h2>Mes Projets</h2>
+          <div class="edit-button-container admin-only hidden">
+            <button id="openModal">
+              <i class="fa-regular fa-pen-to-square"></i> modifier
+            </button>
+          </div>
+        </div>
+
         <div class="filters"></div>
-          <div class="gallery" id="gallery">
-            <figure>
-              <img
-                src="assets/images/abajour-tahina.png"
-                alt="Abajour Tahina"
-              />
-              <figcaption>Abajour Tahina</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/appartement-paris-v.png"
-                alt="Appartement Paris V"
-              />
-              <figcaption>Appartement Paris V</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/restaurant-sushisen-londres.png"
-                alt="Restaurant Sushisen - Londres"
-              />
-              <figcaption>Restaurant Sushisen - Londres</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/la-balisiere.png"
-                alt="Villa “La Balisiere” - Port Louis"
-              />
-              <figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/structures-thermopolis.png"
-                alt="Structures Thermopolis"
-              />
-              <figcaption>Structures Thermopolis</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/appartement-paris-x.png"
-                alt="Appartement Paris X"
-              />
-              <figcaption>Appartement Paris X</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/le-coteau-cassis.png"
-                alt="Pavillon “Le coteau” - Cassis"
-              />
-              <figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/villa-ferneze.png"
-                alt="Villa Ferneze - Isola d’Elba"
-              />
-              <figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/appartement-paris-xviii.png"
-                alt="Appartement Paris XVIII"
-              />
-              <figcaption>Appartement Paris XVIII</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/bar-lullaby-paris.png"
-                alt="Bar “Lullaby” - Paris"
-              />
-              <figcaption>Bar “Lullaby” - Paris</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/hotel-first-arte-new-delhi.png"
-                alt="Hotel First Arte - New Delhi"
-              />
-              <figcaption>Hotel First Arte - New Delhi</figcaption>
-            </figure>
+        <div class="gallery" id="gallery">
+          <figure>
+            <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina" />
+            <figcaption>Abajour Tahina</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/appartement-paris-v.png"
+              alt="Appartement Paris V"
+            />
+            <figcaption>Appartement Paris V</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/restaurant-sushisen-londres.png"
+              alt="Restaurant Sushisen - Londres"
+            />
+            <figcaption>Restaurant Sushisen - Londres</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/la-balisiere.png"
+              alt="Villa “La Balisiere” - Port Louis"
+            />
+            <figcaption>Villa “La Balisiere” - Port Louis</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/structures-thermopolis.png"
+              alt="Structures Thermopolis"
+            />
+            <figcaption>Structures Thermopolis</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/appartement-paris-x.png"
+              alt="Appartement Paris X"
+            />
+            <figcaption>Appartement Paris X</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/le-coteau-cassis.png"
+              alt="Pavillon “Le coteau” - Cassis"
+            />
+            <figcaption>Pavillon “Le coteau” - Cassis</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/villa-ferneze.png"
+              alt="Villa Ferneze - Isola d’Elba"
+            />
+            <figcaption>Villa Ferneze - Isola d’Elba</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/appartement-paris-xviii.png"
+              alt="Appartement Paris XVIII"
+            />
+            <figcaption>Appartement Paris XVIII</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/bar-lullaby-paris.png"
+              alt="Bar “Lullaby” - Paris"
+            />
+            <figcaption>Bar “Lullaby” - Paris</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/images/hotel-first-arte-new-delhi.png"
+              alt="Hotel First Arte - New Delhi"
+            />
+            <figcaption>Hotel First Arte - New Delhi</figcaption>
+          </figure>
         </div>
       </section>
       <section id="contact">
@@ -154,35 +175,37 @@
         </ul>
       </nav>
     </footer>
+
     <!-- MODALE GLOBALE MASQUÉE PAR DÉFAUT -->
-<div class="modal hidden" id="mediaModal">
-  <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal hidden" id="mediaModal">
+      <div class="modal-overlay" id="modalOverlay"></div>
 
-  <div class="modal-content" id="modalContent">
-    <span class="modal-close" id="modalClose">&times;</span>
+      <div class="modal-content" id="modalContent">
+        <span class="modal-close" id="modalClose">&times;</span>
 
-    <!-- VUE 1 : GALERIE -->
-    <div class="modal-view" id="modalGalleryView">
-      <h3>Galerie photo</h3>
-      <div class="modal-gallery">
-        <!-- Les images seront injectées ici en JS -->
+        <!-- VUE 1 : GALERIE -->
+        <div class="modal-view" id="modalGalleryView">
+          <h3>Galerie photo</h3>
+          <div class="modal-gallery">
+            <!-- Les images seront injectées ici en JS -->
+          </div>
+          <button id="openAddView" class="admin-only hidden">
+            Ajouter une photo
+          </button>
+        </div>
+
+        <!-- VUE 2 : AJOUT -->
+        <div class="modal-view hidden" id="modalAddView">
+          <h3>Ajout photo</h3>
+          <form id="addPhotoForm">
+            <input type="file" name="image" accept="image/*" required />
+            <input type="text" name="title" placeholder="Titre" required />
+            <button type="submit">Valider</button>
+          </form>
+          <button id="backToGallery">Retour</button>
+        </div>
       </div>
-      <button id="openAddView">Ajouter une photo</button>
     </div>
-
-    <!-- VUE 2 : AJOUT -->
-    <div class="modal-view hidden" id="modalAddView">
-      <h3>Ajout photo</h3>
-      <form id="addPhotoForm">
-        <input type="file" name="image" accept="image/*" required />
-        <input type="text" name="title" placeholder="Titre" required />
-        <button type="submit">Valider</button>
-      </form>
-      <button id="backToGallery">Retour</button>
-    </div>
-  </div>
-</div>
-
   </body>
   <script src="index.js"></script>
 </html>
